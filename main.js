@@ -1,12 +1,12 @@
 function calcularCuotas(monto, tasaInteres, plazo) {
-    var tasaDecimal = tasaInteres / 100;
-    var cuotaMensual = monto * (tasaDecimal / 12) / (1 - Math.pow(1 + tasaDecimal / 12, -plazo));
-    var cuotas = [];
-    var saldoPendiente = monto;
+    let tasaDecimal = tasaInteres / 100;
+    let cuotaMensual = monto * (tasaDecimal / 12) / (1 - Math.pow(1 + tasaDecimal / 12, -plazo));
+    let cuotas = [];
+    let saldoPendiente = monto;
 
-    for (var i = 1; i <= plazo; i++) {
-        var interesMensual = saldoPendiente * tasaDecimal / 12;
-        var amortizacionMensual = cuotaMensual - interesMensual;
+    for (let i = 1; i <= plazo; i++) {
+        let interesMensual = saldoPendiente * tasaDecimal / 12;
+        let amortizacionMensual = cuotaMensual - interesMensual;
         saldoPendiente -= amortizacionMensual;
 
         cuotas.push({
@@ -21,14 +21,14 @@ function calcularCuotas(monto, tasaInteres, plazo) {
     return cuotas;
 }
 
-var montoPrestamo = parseFloat(prompt("Ingrese el monto del préstamo:"));
-var plazoEnMeses = parseInt(prompt("Ingrese el plazo del préstamo en meses:"));
-var tasaInteres = 7;
+let montoPrestamo = parseFloat(prompt("Ingrese el monto del préstamo:"));
+let plazoEnMeses = parseInt(prompt("Ingrese el plazo del préstamo en meses:"));
+let tasaInteres = 7;
 
 if (isNaN(montoPrestamo) || isNaN(tasaInteres) || isNaN(plazoEnMeses) || montoPrestamo <= 0 || tasaInteres <= 0 || plazoEnMeses <= 0) {
     alert("Por favor, ingrese valores válidos y mayores que cero.");
 } else {
-    var cuotas = calcularCuotas(montoPrestamo, tasaInteres, plazoEnMeses);
+    let cuotas = calcularCuotas(montoPrestamo, tasaInteres, plazoEnMeses);
     console.log(cuotas);
 }
 
