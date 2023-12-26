@@ -1,12 +1,12 @@
 function calcularCuotas(monto, tasaInteres, plazo) {
-    let tasaDecimal = tasaInteres / 100;
-    let cuotaMensual = monto * (tasaDecimal / 12) / (1 - Math.pow(1 + tasaDecimal / 12, -plazo));
-    let cuotas = [];
+    const tasaDecimal = tasaInteres / 100;
+    const cuotas = [];
     let saldoPendiente = monto;
 
     for (let i = 1; i <= plazo; i++) {
-        let interesMensual = saldoPendiente * tasaDecimal / 12;
-        let amortizacionMensual = cuotaMensual - interesMensual;
+        const interesMensual = saldoPendiente * tasaDecimal / 12;
+        const cuotaMensual = monto * (tasaDecimal / 12) / (1 - Math.pow(1 + tasaDecimal / 12, -plazo));
+        const amortizacionMensual = cuotaMensual - interesMensual;
         saldoPendiente -= amortizacionMensual;
 
         cuotas.push({
@@ -21,18 +21,33 @@ function calcularCuotas(monto, tasaInteres, plazo) {
     return cuotas;
 }
 
-let montoPrestamo = parseFloat(prompt("Ingrese el monto del préstamo:"));
-let plazoEnMeses = parseInt(prompt("Ingrese el plazo del préstamo en meses:"));
-let tasaInteres = 7;
-
-if (isNaN(montoPrestamo) || isNaN(tasaInteres) || isNaN(plazoEnMeses) || montoPrestamo <= 0 || tasaInteres <= 0 || plazoEnMeses <= 0) {
-    alert("Por favor, ingrese valores válidos y mayores que cero.");
-} else {
-    let cuotas = calcularCuotas(montoPrestamo, tasaInteres, plazoEnMeses);
-    console.log(cuotas);
+function obtenerNumeroInput(mensaje) {
+    let valor;
+    do {
+        valor = parseFloat(prompt(mensaje));
+    } while (isNaN(valor) || valor <= 0);
+    return valor;
 }
 
+const montoPrestamo = obtenerNumeroInput("Ingrese el monto del préstamo:");
+const plazoEnMeses = parseInt(obtenerNumeroInput("Ingrese el plazo del préstamo en meses:"));
+const tasaInteres = 7;
 
+if (montoPrestamo && plazoEnMeses) {
+    const cuotas = calcularCuotas(montoPrestamo, tasaInteres, plazoEnMeses);
+    console.log(cuotas);
 
+    const mesBuscado = 3;
+    const cuotaEncontrada = cuotas.find(cuota => cuota.mes === mesBuscado);
 
+    if (cuotaEncontrada) {
+        console.log(`Detalles para el mes ${mesBuscado}:`, cuotaEncontrada);
+    } else {
+        console.log(`No se encontraron detalles para el mes ${mesBuscado}.`);
+    }
 
+    const saldosMayoresA500 = cuotas.filter(cuota => cuota.saldoPendiente > 500);
+    console.log("Cuotas con saldos pendientes mayores a 500:", saldosMayoresA500);
+} else {
+    alert("Por favor, ingrese valores válidos y mayores que cero.");
+}
