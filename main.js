@@ -1,7 +1,7 @@
 class Cuota {
     constructor(mes, cuota, interes, amortizacion, saldoPendiente) {
         this.mes = mes;
-        this.cuota = cuota;
+        this.cuotaItem = cuota;
         this.interes = interes;
         this.amortizacion = amortizacion;
         this.saldoPendiente = saldoPendiente;
@@ -9,12 +9,13 @@ class Cuota {
 }
 
 function mostrarCuotaDetallada(cuota) {
+    const { mes, cuotaItem, interes, amortizacion, saldoPendiente } = cuota;
     const modalContent = `
-        <h3>Detalles de la Cuota ${cuota.mes}</h3>
-        <p>Cuota: $${cuota.cuota}</p>
-        <p>Interés: $${cuota.interes}</p>
-        <p>Amortización: $${cuota.amortizacion}</p>
-        <p>Saldo Pendiente: $${cuota.saldoPendiente}</p>
+        <h3>Detalles de la Cuota ${mes}</h3>
+        <p>Cuota: $${cuotaItem}</p>
+        <p>Interés: $${interes}</p>
+        <p>Amortización: $${amortizacion}</p>
+        <p>Saldo Pendiente: $${saldoPendiente}</p>
     `;
 
     // Crear modal
@@ -40,11 +41,11 @@ function mostrarResultados(cuotas) {
     resultContainer.innerHTML = "<h3>Detalles de las cuotas:</h3>";
 
     cuotas.forEach(cuota => {
+        const { mes } = cuota;
         const cuotaDetails = `
             <p>
-                Mes ${cuota.mes} -
-                Cuota: $${cuota.cuota}
-                <button class="verDetalleBtn" data-mes="${cuota.mes}">Ver Detalle</button>
+                Mes ${mes} -
+                <button class="verDetalleBtn" data-mes="${mes}">Ver Detalle</button>
             </p>
         `;
         resultContainer.innerHTML += cuotaDetails;
@@ -56,12 +57,11 @@ function mostrarResultados(cuotas) {
         boton.addEventListener('click', function () {
             const mes = parseInt(this.getAttribute('data-mes'));
             const cuotaSeleccionada = cuotas.find(cuota => cuota.mes === mes);
-            if (cuotaSeleccionada) {
-                mostrarCuotaDetallada(cuotaSeleccionada);
-            }
+            cuotaSeleccionada && mostrarCuotaDetallada(cuotaSeleccionada);
         });
     });
 }
+
 function calcularCuotas() {
     const montoInput = document.getElementById('monto');
     const tasaInput = document.getElementById('tasa');
@@ -71,7 +71,7 @@ function calcularCuotas() {
     const tasaInteres = parseFloat(tasaInput.value);
     const plazo = parseInt(plazoInput.value);
 
-    if (isNaN(monto) || isNaN(tasaInteres) || isNaN(plazo) || monto <= 0 || tasaInteres <= 0 || plazo <= 0) {
+    if (!monto || !tasaInteres || !plazo || monto <= 0 || tasaInteres <= 0 || plazo <= 0) {
         mostrarError("Por favor, ingrese valores válidos y mayores que cero.");
         return;
     }

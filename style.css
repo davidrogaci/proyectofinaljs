@@ -5,7 +5,7 @@ body {
 }
 
 .container {
-    max-width: 300px;
+    max-width: 400px;
     margin: 0 auto;
     padding: 20px;
     border: 1px solid #ddd;
@@ -44,8 +44,6 @@ button {
 button:hover {
     background-color: #45a049;
 }
-
-/* Resto del CSS... */
 
 #result button {
     margin-top: 5px;
