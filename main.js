@@ -1,53 +1,87 @@
-function calcularCuotas(monto, tasaInteres, plazo) {
+class Cuota {
+    constructor(mes, cuota, interes, amortizacion, saldoPendiente) {
+        this.mes = mes;
+        this.cuota = cuota;
+        this.interes = interes;
+        this.amortizacion = amortizacion;
+        this.saldoPendiente = saldoPendiente;
+    }
+}
+
+function calcularCuotas() {
+    const montoInput = document.getElementById('monto');
+    const tasaInput = document.getElementById('tasa');
+    const plazoInput = document.getElementById('plazo');
+
+    const monto = parseFloat(montoInput.value);
+    const tasaInteres = parseFloat(tasaInput.value);
+    const plazo = parseInt(plazoInput.value);
+
+    if (isNaN(monto) || isNaN(tasaInteres) || isNaN(plazo) || monto <= 0 || tasaInteres <= 0 || plazo <= 0) {
+        mostrarError("Por favor, ingrese valores válidos y mayores que cero.");
+        return;
+    }
+
     const tasaDecimal = tasaInteres / 100;
     const cuotas = [];
+
     let saldoPendiente = monto;
 
     for (let i = 1; i <= plazo; i++) {
         const interesMensual = saldoPendiente * tasaDecimal / 12;
         const cuotaMensual = monto * (tasaDecimal / 12) / (1 - Math.pow(1 + tasaDecimal / 12, -plazo));
         const amortizacionMensual = cuotaMensual - interesMensual;
+
         saldoPendiente -= amortizacionMensual;
 
-        cuotas.push({
-            mes: i,
-            cuota: cuotaMensual.toFixed(2),
-            interes: interesMensual.toFixed(2),
-            amortizacion: amortizacionMensual.toFixed(2),
-            saldoPendiente: saldoPendiente.toFixed(2)
-        });
+        cuotas.push(new Cuota(
+            i,
+            cuotaMensual.toFixed(2),
+            interesMensual.toFixed(2),
+            amortizacionMensual.toFixed(2),
+            saldoPendiente.toFixed(2)
+        ));
     }
 
-    return cuotas;
+    mostrarResultados(cuotas);
+    guardarEnLocalStorage(monto, tasaInteres, plazo);
 }
 
-function obtenerNumeroInput(mensaje) {
-    let valor;
-    do {
-        valor = parseFloat(prompt(mensaje));
-    } while (isNaN(valor) || valor <= 0);
-    return valor;
+function mostrarResultados(cuotas) {
+    const resultContainer = document.getElementById('result');
+    resultContainer.innerHTML = "<h3>Detalles de las cuotas:</h3>";
+
+    cuotas.forEach(cuota => {
+        const cuotaDetails = `
+            <p>Mes ${cuota.mes} - Cuota: $${cuota.cuota} | Interés: $${cuota.interes} | Amortización: $${cuota.amortizacion} | Saldo Pendiente: $${cuota.saldoPendiente}</p>
+        `;
+        resultContainer.innerHTML += cuotaDetails;
+    });
 }
 
-const montoPrestamo = obtenerNumeroInput("Ingrese el monto del préstamo:");
-const plazoEnMeses = parseInt(obtenerNumeroInput("Ingrese el plazo del préstamo en meses:"));
-const tasaInteres = 7;
+function mostrarError(mensaje) {
+    const errorContainer = document.getElementById('error');
+    errorContainer.innerHTML = `<p>${mensaje}</p>`;
+}
 
-if (montoPrestamo && plazoEnMeses) {
-    const cuotas = calcularCuotas(montoPrestamo, tasaInteres, plazoEnMeses);
-    console.log(cuotas);
+function guardarEnLocalStorage(monto, tasa, plazo) {
+    const datos = { monto, tasa, plazo };
+    localStorage.setItem('prestamoDatos', JSON.stringify(datos));
+}
 
-    const mesBuscado = 3;
-    const cuotaEncontrada = cuotas.find(cuota => cuota.mes === mesBuscado);
-
-    if (cuotaEncontrada) {
-        console.log(`Detalles para el mes ${mesBuscado}:`, cuotaEncontrada);
-    } else {
-        console.log(`No se encontraron detalles para el mes ${mesBuscado}.`);
+function cargarDesdeLocalStorage() {
+    const prestamoDatos = localStorage.getItem('prestamoDatos');
+    if (prestamoDatos) {
+        const { monto, tasa, plazo } = JSON.parse(prestamoDatos);
+        document.getElementById('monto').value = monto;
+        document.getElementById('tasa').value = tasa;
+        document.getElementById('plazo').value = plazo;
     }
-
-    const saldosMayoresA500 = cuotas.filter(cuota => cuota.saldoPendiente > 500);
-    console.log("Cuotas con saldos pendientes mayores a 500:", saldosMayoresA500);
-} else {
-    alert("Por favor, ingrese valores válidos y mayores que cero.");
 }
+
+document.getElementById('calcularBtn').addEventListener('click', () => {
+    mostrarError(""); // Limpiar mensajes de error
+    calcularCuotas();
+});
+
+window.addEventListener('load', cargarDesdeLocalStorage);
