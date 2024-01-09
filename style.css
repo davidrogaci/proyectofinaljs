@@ -45,15 +45,45 @@ button:hover {
     background-color: #45a049;
 }
 
-#result {
-    margin-top: 20px;
-    font-weight: bold;
-    text-align: left;
-    color: #333;
+/* Resto del CSS... */
+
+#result button {
+    margin-top: 5px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 6px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
 }
 
-#error {
-    color: #FF0000;
+#result button:hover {
+    background-color: #45a049;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.modal button {
     margin-top: 10px;
-    text-align: left;
+    background-color: #af4c4c;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.modal button:hover {
+    background-color: #a04545;
 }

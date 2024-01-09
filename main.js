@@ -8,6 +8,60 @@ class Cuota {
     }
 }
 
+function mostrarCuotaDetallada(cuota) {
+    const modalContent = `
+        <h3>Detalles de la Cuota ${cuota.mes}</h3>
+        <p>Cuota: $${cuota.cuota}</p>
+        <p>Interés: $${cuota.interes}</p>
+        <p>Amortización: $${cuota.amortizacion}</p>
+        <p>Saldo Pendiente: $${cuota.saldoPendiente}</p>
+    `;
+
+    // Crear modal
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.innerHTML = modalContent;
+
+    // Botón para cerrar el modal
+    const closeButton = document.createElement('button');
+    closeButton.innerText = 'Cerrar';
+    closeButton.addEventListener('click', () => {
+        modal.remove();
+    });
+
+    modal.appendChild(closeButton);
+
+    // Agregar el modal al cuerpo del documento
+    document.body.appendChild(modal);
+}
+
+function mostrarResultados(cuotas) {
+    const resultContainer = document.getElementById('result');
+    resultContainer.innerHTML = "<h3>Detalles de las cuotas:</h3>";
+
+    cuotas.forEach(cuota => {
+        const cuotaDetails = `
+            <p>
+                Mes ${cuota.mes} -
+                Cuota: $${cuota.cuota}
+                <button class="verDetalleBtn" data-mes="${cuota.mes}">Ver Detalle</button>
+            </p>
+        `;
+        resultContainer.innerHTML += cuotaDetails;
+    });
+
+    // Agregar eventos a los botones "Ver Detalle"
+    const botonesDetalle = document.querySelectorAll('.verDetalleBtn');
+    botonesDetalle.forEach(boton => {
+        boton.addEventListener('click', function () {
+            const mes = parseInt(this.getAttribute('data-mes'));
+            const cuotaSeleccionada = cuotas.find(cuota => cuota.mes === mes);
+            if (cuotaSeleccionada) {
+                mostrarCuotaDetallada(cuotaSeleccionada);
+            }
+        });
+    });
+}
 function calcularCuotas() {
     const montoInput = document.getElementById('monto');
     const tasaInput = document.getElementById('tasa');
@@ -45,18 +99,6 @@ function calcularCuotas() {
 
     mostrarResultados(cuotas);
     guardarEnLocalStorage(monto, tasaInteres, plazo);
-}
-
-function mostrarResultados(cuotas) {
-    const resultContainer = document.getElementById('result');
-    resultContainer.innerHTML = "<h3>Detalles de las cuotas:</h3>";
-
-    cuotas.forEach(cuota => {
-        const cuotaDetails = `
-            <p>Mes ${cuota.mes} - Cuota: $${cuota.cuota} | Interés: $${cuota.interes} | Amortización: $${cuota.amortizacion} | Saldo Pendiente: $${cuota.saldoPendiente}</p>
-        `;
-        resultContainer.innerHTML += cuotaDetails;
-    });
 }
 
 function mostrarError(mensaje) {
