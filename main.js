@@ -72,7 +72,11 @@ function calcularCuotas() {
     const plazo = parseInt(plazoInput.value);
 
     if (!monto || !tasaInteres || !plazo || monto <= 0 || tasaInteres <= 0 || plazo <= 0) {
-        mostrarError("Por favor, ingrese valores válidos y mayores que cero.");
+        Swal.fire({
+            title: "Error",
+            text: "Por favor, ingrese valores válidos y mayores que cero.",
+            icon: "error"
+        });
         return;
     }
 
