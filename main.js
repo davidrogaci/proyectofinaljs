@@ -27,13 +27,21 @@ function mostrarCuotaDetallada(cuota) {
     const closeButton = document.createElement('button');
     closeButton.innerText = 'Cerrar';
     closeButton.addEventListener('click', () => {
-        modal.remove();
+        modal.classList.remove('active'); // Quita la clase 'active' para ocultar la ventana modal
+        setTimeout(() => {
+            modal.remove(); // Elimina el modal después de la transición
+        }, 300); // Ajusta el tiempo de la transición
     });
 
     modal.appendChild(closeButton);
 
     // Agregar el modal al cuerpo del documento
     document.body.appendChild(modal);
+
+    // Agregar la clase 'active' después de un breve retraso para activar la transición
+    setTimeout(() => {
+        modal.classList.add('active');
+    }, 50);
 }
 
 function mostrarResultados(cuotas) {

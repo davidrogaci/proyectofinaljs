@@ -70,6 +70,12 @@ button:hover {
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
+    opacity: 0; /* Inicialmente transparente */
+    transition: opacity 0.3s ease-in-out; /* Transición de opacidad */
+}
+
+.modal.active {
+    opacity: 1; /* Hace la ventana modal visible */
 }
 
 .modal button {
