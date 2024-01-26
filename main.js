@@ -70,6 +70,55 @@ function mostrarResultados(cuotas) {
     });
 }
 
+// Mostrando ejemplos de cuotas usando API Local
+function cargarCuotasDesdeAPI() {
+    fetch('data.json')
+        .then(response => response.json())
+        .then(data => {
+            const cuotas = data.map(item => new Cuota(
+                item.mes,
+                item.cuota,
+                item.interes,
+                item.amortizacion,
+                item.saldoPendiente
+            ));
+
+            mostrarResultadosEjemplos(cuotas);
+        })
+        .catch(error => {
+            console.error('Error al cargar datos desde la API:', error);
+        });
+}
+
+// Llamada a la función para cargar cuotas desde la API al cargar la página
+window.addEventListener('load', cargarCuotasDesdeAPI);
+
+function mostrarResultadosEjemplos(cuotas) {
+    const resultContainer = document.getElementById('result');
+    resultContainer.innerHTML = "<h3>Ejemplo de Cuotas</h3>";
+
+    cuotas.forEach(cuota => {
+        const { mes } = cuota;
+        const cuotaDetails = `
+            <p>
+                Mes ${mes} -
+                <button class="verDetalleBtn" data-mes="${mes}">Ver Detalle</button>
+            </p>
+        `;
+        resultContainer.innerHTML += cuotaDetails;
+    });
+
+    // Agregar eventos a los botones "Ver Detalle"
+    const botonesDetalle = document.querySelectorAll('.verDetalleBtn');
+    botonesDetalle.forEach(boton => {
+        boton.addEventListener('click', function () {
+            const mes = parseInt(this.getAttribute('data-mes'));
+            const cuotaSeleccionada = cuotas.find(cuota => cuota.mes === mes);
+            cuotaSeleccionada && mostrarCuotaDetallada(cuotaSeleccionada);
+        });
+    });
+}
+
 function calcularCuotas() {
     const montoInput = document.getElementById('monto');
     const tasaInput = document.getElementById('tasa');

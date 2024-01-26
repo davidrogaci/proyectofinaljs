@@ -1,0 +1,23 @@
+[
+    {
+        "mes": 1,
+        "cuota": 500,
+        "interes": 50,
+        "amortizacion": 450,
+        "saldoPendiente": 950
+    },
+    {
+        "mes": 2,
+        "cuota": 500,
+        "interes": 47,
+        "amortizacion": 453,
+        "saldoPendiente": 497
+    },
+    {
+        "mes": 3,
+        "cuota": 500,
+        "interes": 45,
+        "amortizacion": 455,
+        "saldoPendiente": 42
+    }
+]
