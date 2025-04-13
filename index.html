@@ -1,37 +1,92 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Calculadora de préstamos para calcular cuotas mensuales, intereses y amortización"
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <link
+      rel="shortcut icon"
+      href="./assets/favicon.svg"
+      type="image/svg+xml"
+    />
+    <title>Calculadora de Préstamos | Calcule sus cuotas mensuales</title>
+  </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./style.css">
-    <link rel="shortcut icon" href="./recursos/favicon.ico" type="image/x-icon">
-    <title>Calculadora de Prestamos</title>
-</head>
+  <body>
+    <main class="container">
+      <header>
+        <h1>Calculadora de Préstamos</h1>
+        <p class="description">
+          Calcule sus cuotas mensuales, intereses y amortización de forma
+          sencilla
+        </p>
+      </header>
 
-<body>
-    <div class="container">
-        <h2>Calculadora de Préstamos</h2>
+      <section>
+        <form id="loanForm" aria-labelledby="form-title">
+          <h2 id="form-title" class="visually-hidden">
+            Formulario de cálculo de préstamo
+          </h2>
 
-        <form id="loanForm">
-            <label for="monto">Monto del préstamo:</label>
-            <input type="number" id="monto" placeholder="Ingrese el monto" required>
+          <div class="form-group">
+            <label for="monto">Monto del préstamo en pesos:</label>
+            <input
+              type="number"
+              id="monto"
+              name="monto"
+              placeholder="Ingrese el monto"
+              required
+              aria-required="true"
+              min="0"
+              step="0.01"
+            />
+          </div>
 
-            <label for="tasa">Tasa de interés anual (%):</label>
-            <input type="number" id="tasa" placeholder="Ingrese la tasa de interés" required>
+          <div class="form-group">
+            <label for="tasa">Tasa de interés anual en porcentaje:</label>
+            <input
+              type="number"
+              id="tasa"
+              name="tasa"
+              placeholder="Ingrese la tasa de interés"
+              required
+              aria-required="true"
+              min="0"
+              step="0.01"
+            />
+          </div>
 
+          <div class="form-group">
             <label for="plazo">Plazo del préstamo en meses:</label>
-            <input type="number" id="plazo" placeholder="Ingrese el plazo en meses" required>
+            <input
+              type="number"
+              id="plazo"
+              name="plazo"
+              placeholder="Ingrese el plazo en meses"
+              required
+              aria-required="true"
+              min="1"
+            />
+          </div>
 
-            <button type="button" id="calcularBtn">Calcular</button>
+          <button type="button" id="calcularBtn" aria-label="Calcular préstamo">
+            Calcular
+          </button>
         </form>
+      </section>
 
-        <div id="result"></div>
-        <div id="error"></div>
-    </div>
+      <section id="result" aria-live="polite">
+        <h2 class="visually-hidden">Resultados del cálculo</h2>
+      </section>
+
+      <div id="error" role="alert" aria-live="assertive"></div>
+    </main>
 
     <script src="./main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</body>
-
+  </body>
 </html>
